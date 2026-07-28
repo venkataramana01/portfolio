@@ -1,133 +1,99 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code2, Layout, Server, Database, Bot, Wrench } from 'lucide-react';
+import { Code2, Layout, Server, Database, Wrench, Cloud, BrainCircuit } from 'lucide-react';
 
 const Skills = () => {
   const skillCategories = [
     {
-      title: 'Programming Languages',
-      icon: <Code2 className="w-6 h-6 text-neonCyan" />,
-      color: 'from-neonCyan/20 to-transparent border-neonCyan/30',
-      skills: [
-        { name: 'Java', level: 90 },
-        { name: 'JavaScript', level: 85 },
-        { name: 'Python', level: 80 },
-      ],
+      title: 'Languages',
+      icon: <Code2 className="w-5 h-5 text-primary" />,
+      skills: ['Java', 'JavaScript', 'Python'],
     },
     {
-      title: 'Frontend Development',
-      icon: <Layout className="w-6 h-6 text-neonPurple" />,
-      color: 'from-neonPurple/20 to-transparent border-neonPurple/30',
-      skills: [
-        { name: 'React.js', level: 75 },
-        { name: 'HTML5', level: 90 },
-        { name: 'CSS3 / Tailwind', level: 90 },
-      ],
+      title: 'Frontend',
+      icon: <Layout className="w-5 h-5 text-primary" />,
+      skills: ['React.js', 'HTML5', 'Tailwind CSS'],
     },
     {
-      title: 'Backend & APIs',
-      icon: <Server className="w-6 h-6 text-neonIndigo" />,
-      color: 'from-neonIndigo/20 to-transparent border-neonIndigo/30',
-      skills: [
-        { name: 'Node.js', level: 85 },
-        { name: 'Express.js', level: 80 },
-        { name: 'REST APIs', level: 75 },
-      ],
+      title: 'Backend',
+      icon: <Server className="w-5 h-5 text-primary" />,
+      skills: ['Node.js', 'Express.js', 'REST APIs'],
     },
     {
-      title: 'Database Management',
-      icon: <Database className="w-6 h-6 text-emerald-400" />,
-      color: 'from-emerald-400/20 to-transparent border-emerald-400/30',
-      skills: [
-        { name: 'MongoDB', level: 85 },
-        { name: 'MySQL', level: 80 },
-      ],
+      title: 'Databases',
+      icon: <Database className="w-5 h-5 text-primary" />,
+      skills: ['MongoDB', 'MySQL'],
     },
     {
       title: 'AI & Automation',
-      icon: <Bot className="w-6 h-6 text-rose-500" />,
-      color: 'from-rose-500/20 to-transparent border-rose-500/30',
-      skills: [
-        { name: 'n8n & AI Workflows', level: 90 },
-        { name: 'Agentic AI & LLMs', level: 85 },
-        { name: 'Pandas & Scikit-learn', level: 35 },
-      ],
+      icon: <BrainCircuit className="w-5 h-5 text-primary" />,
+      skills: ['n8n Workflows', 'LLM Integration', 'Agentic AI'],
     },
     {
-      title: 'Tools & Integrations',
-      icon: <Wrench className="w-6 h-6 text-amber-500" />,
-      color: 'from-amber-500/20 to-transparent border-amber-500/30',
-      skills: [
-        { name: 'GitHub', level: 75 },
-        { name: 'Google Sheets API', level: 85 },
-        { name: 'Docker', level: 60 },
-      ],
+      title: 'Cloud & DevOps',
+      icon: <Cloud className="w-5 h-5 text-primary" />,
+      skills: ['Docker', 'AWS Basics', 'CI/CD'],
+    },
+    {
+      title: 'Tools',
+      icon: <Wrench className="w-5 h-5 text-primary" />,
+      skills: ['GitHub', 'VS Code', 'Postman'],
     },
   ];
 
   return (
-    <section id="skills" className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-black/20">
-      {/* Background Radial Glow */}
-      <div className="absolute bottom-0 left-10 w-[600px] h-[600px] rounded-full radial-glow-cyan glow-circle"></div>
+    <section id="skills" className="section-padding relative overflow-hidden">
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-primary/[0.03] blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto z-10 relative">
-        {/* Section Heading */}
-        <div className="text-center md:text-left mb-16">
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-sans tracking-tight text-white mb-2">
-            &lt;Skills Engine /&gt;
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.5 }}
+          className="mb-16"
+        >
+          <p className="text-primary text-sm font-semibold tracking-wider uppercase mb-3">Skills</p>
+          <h2 className="section-heading mb-4">
+            Technologies I work with
           </h2>
-          <div className="h-[3px] w-20 bg-gradient-to-r from-neonCyan to-neonPurple rounded mx-auto md:mx-0"></div>
-        </div>
+          <p className="section-subtitle">
+            A curated toolkit spanning the full stack, from systems programming to AI workflows.
+          </p>
+        </motion.div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {skillCategories.map((category, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 35 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className={`p-6 bg-glass border border-darkBorder rounded-2xl relative overflow-hidden group hover:border-slate-700 transition-colors duration-300`}
+              transition={{ duration: 0.4, delay: idx * 0.06 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-xl border border-borderSubtle bg-surface/40 hover:border-borderHover hover:bg-surfaceLight/30 transition-all duration-300 group"
             >
-              {/* Subtle top edge glow gradient */}
-              <div className={`absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r ${category.color.split(' ')[0]}`}></div>
-              
-              {/* Card Title */}
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="p-2 bg-[#121217] rounded-lg border border-darkBorder">
+              {/* Card Header */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/15 transition-colors">
                   {category.icon}
                 </div>
-                <h3 className="font-mono text-base font-bold text-slate-200 tracking-wide">
+                <h3 className="text-sm font-semibold text-textPrimary tracking-wide">
                   {category.title}
                 </h3>
               </div>
 
-              {/* Progress Bars */}
-              <div className="space-y-4">
+              {/* Skill Tags */}
+              <div className="flex flex-wrap gap-1.5">
                 {category.skills.map((skill, sIdx) => (
-                  <div key={sIdx} className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-slate-300 font-medium">{skill.name}</span>
-                      <span className="text-slate-500">{skill.level}%</span>
-                    </div>
-                    {/* Progress Track */}
-                    <div className="h-1.5 w-full bg-[#121217] rounded-full overflow-hidden border border-darkBorder">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.1 }}
-                        className={`h-full rounded-full bg-gradient-to-r ${
-                          idx % 3 === 0
-                            ? 'from-neonCyan to-neonIndigo shadow-[0_0_8px_rgba(0,240,255,0.4)]'
-                            : idx % 3 === 1
-                            ? 'from-neonPurple to-neonIndigo shadow-[0_0_8px_rgba(157,78,221,0.4)]'
-                            : 'from-neonIndigo to-emerald-400 shadow-[0_0_8px_rgba(99,102,241,0.4)]'
-                        }`}
-                      />
-                    </div>
-                  </div>
+                  <span
+                    key={sIdx}
+                    className="px-2.5 py-1 text-[12px] font-medium text-textSecondary bg-white/[0.04] rounded-md border border-borderSubtle hover:text-textPrimary hover:border-borderHover transition-all duration-200 cursor-default"
+                  >
+                    {skill}
+                  </span>
                 ))}
               </div>
             </motion.div>

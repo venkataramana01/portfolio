@@ -14,15 +14,9 @@ import './Lanyard.css';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-// 1x1 transparent pixel — lets useTexture be called unconditionally when a
-// front/back image isn't supplied.
 const BLANK_PIXEL =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
-// The card model's front face is UV-mapped to the LEFT half of the texture
-// atlas and the back face to the RIGHT half (measured from card.glb). Each
-// custom image is composited into its own half so the two faces render
-// independently, aspect-preserving (no stretching).
 const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 0.755 };
 const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 0.757 };
 
@@ -35,7 +29,7 @@ export default function Lanyard({
   backImage = null,
   imageFit = 'cover',
   lanyardImage = null,
-  lanyardWidth = 1
+  lanyardWidth = 1,
 }) {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
@@ -98,6 +92,7 @@ export default function Lanyard({
     </div>
   );
 }
+
 function Band({
   maxSpeed = 50,
   minSpeed = 0,
@@ -106,7 +101,7 @@ function Band({
   backImage = null,
   imageFit = 'cover',
   lanyardImage = null,
-  lanyardWidth = 1
+  lanyardWidth = 1,
 }) {
   const band = useRef(),
     fixed = useRef(),
@@ -167,6 +162,7 @@ function Band({
     composite.needsUpdate = true;
     return composite;
   }, [frontImage, backImage, imageFit, frontTex, backTex, materials.base.map]);
+
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
@@ -179,7 +175,7 @@ function Band({
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
   useSphericalJoint(j3, card, [
     [0, 0, 0],
-    [0, 2.67, -0.05]
+    [0, 1.5, 0],
   ]);
 
   useEffect(() => {
@@ -212,12 +208,12 @@ function Band({
       curve.points[3].copy(fixed.current.translation());
       band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
       ang.copy(card.current.angvel());
-      const q = card.current.rotation();
-      const qObj = new THREE.Quaternion(q.x, q.y, q.z, q.w);
-      const euler = new THREE.Euler().setFromQuaternion(qObj);
-      const rotY = euler.y;
-      const targetRotY = Math.round(rotY / Math.PI) * Math.PI;
-      card.current.setAngvel({ x: ang.x, y: ang.y - (rotY - targetRotY) * 0.25, z: ang.z });
+      rot.copy(card.current.rotation());
+      card.current.setAngvel({
+        x: ang.x,
+        y: ang.y - rot.y * 0.25,
+        z: ang.z,
+      });
     }
   });
 
@@ -238,10 +234,10 @@ function Band({
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
-          <CuboidCollider args={[1.42, 2.0, 0.01]} />
+          <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={4.0}
-            position={[0, -2.13, -0.05]}
+            scale={2.25}
+            position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={e => (e.target.releasePointerCapture(e.pointerId), drag(false))}
@@ -255,9 +251,8 @@ function Band({
                 map={cardMap}
                 map-anisotropy={16}
                 clearcoat={isMobile ? 0 : 1}
-                clearcoatRoughness={0.15}
-                roughness={0.15}
-                metalness={0.15}
+                roughness={0.9}
+                metalness={0.8}
               />
             </mesh>
             <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
@@ -269,7 +264,7 @@ function Band({
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
-          color="#00f0ff"
+          color="white"
           depthTest={false}
           resolution={isMobile ? [1000, 2000] : [1000, 1000]}
           useMap
@@ -278,7 +273,6 @@ function Band({
           lineWidth={lanyardWidth}
         />
       </mesh>
-
     </>
   );
 }

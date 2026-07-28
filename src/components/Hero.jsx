@@ -1,155 +1,163 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Mail, Terminal, TerminalSquare, Play, Sparkles } from 'lucide-react';
-import DarkVeil from './DarkVeil';
-import Lanyard from './Lanyard';
+import { ArrowRight, Download, Mail } from 'lucide-react';
 import profilePic from '../assets/profile.jpg';
+import Lanyard from './Lanyard';
+import LightRays from './LightRays';
 
-// Helper to generate the front image of the ID card dynamically
-const generateIdCardFront = (profileImg) => {
-  if (typeof document === 'undefined') return null;
+const GithubIcon = ({ className }) => (
+  <svg className={className || "w-4 h-4"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const LinkedinIcon = ({ className }) => (
+  <svg className={className || "w-4 h-4"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
+function generateCircuitBack() {
   const canvas = document.createElement('canvas');
-  canvas.width = 600;
-  canvas.height = 850;
+  canvas.width = 512;
+  canvas.height = 728;
   const ctx = canvas.getContext('2d');
-  if (!ctx) return null;
+  const W = 512, H = 728;
 
-  if (profileImg) {
-    // 1. Image Enhancement Filters (High Contrast B&W)
-    ctx.filter = 'contrast(1.18) brightness(1.03)';
+  // Black background
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
 
-    // 2. Draw the image (Aspect Fill)
-    const aspect = profileImg.width / profileImg.height;
-    const canvasAspect = canvas.width / canvas.height;
-    let dw, dh, dx, dy;
-    if (aspect > canvasAspect) {
-      dh = canvas.height;
-      dw = dh * aspect;
-      dx = (canvas.width - dw) / 2;
-      dy = 0;
-    } else {
-      dw = canvas.width;
-      dh = dw / aspect;
-      dx = 0;
-      dy = (canvas.height - dh) / 2;
+  // Subtle grid
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x < W; x += 20) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 0; y < H; y += 20) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // Draw circuit traces
+  const drawTrace = (x1, y1, x2, y2, via = false) => {
+    ctx.strokeStyle = 'rgba(200, 200, 200, 0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    // Right-angle routing
+    const midX = x1 + (x2 - x1) * 0.5;
+    ctx.lineTo(midX, y1);
+    ctx.lineTo(midX, y2);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    if (via) {
+      ctx.fillStyle = 'rgba(200, 200, 200, 0.8)';
+      ctx.beginPath();
+      ctx.arc(x2, y2, 3, 0, Math.PI * 2);
+      ctx.fill();
     }
-    ctx.drawImage(profileImg, dx, dy, dw, dh);
-    ctx.filter = 'none'; // Reset filter
+  };
 
-    // 3. Subtle Vignette Shading
-    ctx.save();
-    const vignette = ctx.createRadialGradient(300, 425, 250, 300, 425, 600);
-    vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    vignette.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
-    ctx.fillStyle = vignette;
-    ctx.fillRect(0, 0, 600, 850);
-    ctx.restore();
+  // Traces radiating from center
+  const cx = 256, cy = 340;
+  const traces = [
+    { x1: cx, y1: cy, x2: 60, y2: 80 },
+    { x1: cx, y1: cy, x2: 452, y2: 80 },
+    { x1: cx, y1: cy, x2: 60, y2: 600 },
+    { x1: cx, y1: cy, x2: 452, y2: 600 },
+    { x1: cx, y1: cy, x2: 20, y2: 200 },
+    { x1: cx, y1: cy, x2: 492, y2: 200 },
+    { x1: cx, y1: cy, x2: 20, y2: 480 },
+    { x1: cx, y1: cy, x2: 492, y2: 480 },
+    { x1: cx, y1: cy, x2: 120, y2: 30 },
+    { x1: cx, y1: cy, x2: 392, y2: 30 },
+    { x1: cx, y1: cy, x2: 120, y2: 698 },
+    { x1: cx, y1: cy, x2: 392, y2: 698 },
+  ];
+  traces.forEach(t => drawTrace(t.x1, t.y1, t.x2, t.y2, true));
 
-    // 4. Thin glowing cyan border
-    ctx.strokeStyle = '#00f0ff';
-    ctx.lineWidth = 6;
-    ctx.strokeRect(3, 3, 594, 844);
-  } else {
-    // Fallback: Gradient with initials
-    const grad = ctx.createLinearGradient(0, 0, 0, 850);
-    grad.addColorStop(0, '#060608');
-    grad.addColorStop(0.5, '#0f0f15');
-    grad.addColorStop(1, '#1b0f2b');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 600, 850);
+  // Extra traces
+  drawTrace(60, 80, 20, 160);
+  drawTrace(452, 80, 492, 160);
+  drawTrace(60, 600, 20, 520);
+  drawTrace(452, 600, 492, 520);
+  drawTrace(120, 30, 60, 30);
+  drawTrace(392, 30, 452, 30);
+  drawTrace(120, 698, 60, 698);
+  drawTrace(392, 698, 452, 698);
 
-    ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
-    ctx.lineWidth = 12;
-    ctx.strokeRect(6, 6, 588, 838);
+  // Concentric ring around processor
+  ctx.strokeStyle = 'rgba(180, 180, 180, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 120, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 140, 0, Math.PI * 2);
+  ctx.stroke();
 
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 80px "Space Grotesk", sans-serif';
-    ctx.fillText('VR', 300, 450);
+  // Processor chip (square)
+  const chipSize = 100;
+  const chipX = cx - chipSize / 2;
+  const chipY = cy - chipSize / 2;
+
+  // Outer chip border
+  ctx.strokeStyle = '#c0c0c0';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(chipX, chipY, chipSize, chipSize);
+
+  // Inner chip area
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(chipX + 4, chipY + 4, chipSize - 8, chipSize - 8);
+
+  // Chip pins (top, bottom, left, right)
+  ctx.fillStyle = '#c0c0c0';
+  for (let i = 0; i < 8; i++) {
+    const px = chipX + 10 + i * 11;
+    ctx.fillRect(px, chipY - 6, 3, 6);
+    ctx.fillRect(px, chipY + chipSize, 3, 6);
+  }
+  for (let i = 0; i < 6; i++) {
+    const py = chipY + 12 + i * 14;
+    ctx.fillRect(chipX - 6, py, 6, 3);
+    ctx.fillRect(chipX + chipSize, py, 6, 3);
+  }
+
+  // Chip core glow
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40);
+  grad.addColorStop(0, 'rgba(60, 130, 246, 0.15)');
+  grad.addColorStop(1, 'rgba(60, 130, 246, 0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(chipX + 4, chipY + 4, chipSize - 8, chipSize - 8);
+
+  // Name on the chip
+  ctx.fillStyle = '#3B82F6';
+  ctx.font = 'bold 14px "Space Grotesk", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('Venkata', cx, cy - 8);
+  ctx.fillText('Ramana Achuta', cx, cy + 12);
+
+  // Ticks around chip (decoration)
+  ctx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * Math.PI * 2;
+    const r1 = 60;
+    const r2 = 65;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(angle) * r1, cy + Math.sin(angle) * r1);
+    ctx.lineTo(cx + Math.cos(angle) * r2, cy + Math.sin(angle) * r2);
+    ctx.stroke();
   }
 
   return canvas.toDataURL('image/png');
-};
-
-// Helper to generate the back image of the ID card dynamically
-const generateIdCardBack = (profileImg) => {
-  if (typeof document === 'undefined') return null;
-  const canvas = document.createElement('canvas');
-  canvas.width = 600;
-  canvas.height = 850;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return null;
-
-  if (profileImg) {
-    // 1. Image Enhancement Filters (High Contrast B&W)
-    ctx.filter = 'contrast(1.18) brightness(1.03)';
-
-    // 2. Draw the image (Aspect Fill)
-    const aspect = profileImg.width / profileImg.height;
-    const canvasAspect = canvas.width / canvas.height;
-    let dw, dh, dx, dy;
-    if (aspect > canvasAspect) {
-      dh = canvas.height;
-      dw = dh * aspect;
-      dx = (canvas.width - dw) / 2;
-      dy = 0;
-    } else {
-      dw = canvas.width;
-      dh = dw / aspect;
-      dx = 0;
-      dy = (canvas.height - dh) / 2;
-    }
-    ctx.drawImage(profileImg, dx, dy, dw, dh);
-    ctx.filter = 'none'; // Reset filter
-
-    // 3. Subtle Vignette Shading
-    ctx.save();
-    const vignette = ctx.createRadialGradient(300, 425, 250, 300, 425, 600);
-    vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    vignette.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
-    ctx.fillStyle = vignette;
-    ctx.fillRect(0, 0, 600, 850);
-    ctx.restore();
-
-    // 4. Thin glowing purple border
-    ctx.strokeStyle = '#9d4edd';
-    ctx.lineWidth = 6;
-    ctx.strokeRect(3, 3, 594, 844);
-  } else {
-    // Fallback: Gradient with initials
-    const grad = ctx.createLinearGradient(0, 0, 0, 850);
-    grad.addColorStop(0, '#1b0f2b');
-    grad.addColorStop(1, '#060608');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 600, 850);
-
-    ctx.strokeStyle = 'rgba(157, 78, 221, 0.4)';
-    ctx.lineWidth = 12;
-    ctx.strokeRect(6, 6, 588, 838);
-
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 80px "Space Grotesk", sans-serif';
-    ctx.fillText('VR', 300, 450);
-  }
-
-  return canvas.toDataURL('image/png');
-};
-
+}
 
 const Hero = () => {
-  const [profileImg, setProfileImg] = React.useState(null);
-
-  React.useEffect(() => {
-    const img = new Image();
-    img.src = profilePic;
-    img.onload = () => {
-      setProfileImg(img);
-    };
-  }, []);
-
-  const cardFrontImage = React.useMemo(() => generateIdCardFront(profileImg), [profileImg]);
-  const cardBackImage = React.useMemo(() => generateIdCardBack(profileImg), [profileImg]);
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -158,11 +166,7 @@ const Hero = () => {
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 
@@ -170,145 +174,148 @@ const Hero = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 24, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: 'spring', stiffness: 100, damping: 15 },
+      transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
     },
   };
+
+  const circuitBack = useMemo(() => generateCircuitBack(), []);
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden ai-grid"
+      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"
     >
-      {/* DarkVeil Shader Background */}
-      <div className="absolute inset-0 w-full h-full -z-10 opacity-30 pointer-events-none">
-        <DarkVeil 
-          speed={0.3} 
-          hueShift={-45} 
-          noiseIntensity={0.02} 
-          scanlineIntensity={0.08} 
-          scanlineFrequency={0.8}
-          warpAmount={0.2}
-          resolutionScale={0.75}
+      {/* LightRays background */}
+      <div className="absolute inset-0 z-0">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#3B82F6"
+          raysSpeed={1.5}
+          lightSpread={0.8}
+          rayLength={1.2}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0.1}
+          distortion={0.05}
         />
       </div>
 
-      {/* Background Radial Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full radial-glow-cyan glow-circle"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-[500px] h-[500px] rounded-full radial-glow-purple glow-circle"></div>
+      {/* Lanyard - anchored left, behind text */}
+      <div className="absolute inset-0 z-0 pointer-events-auto">
+        <Lanyard
+          position={[-4, 0, 18]}
+          gravity={[0, -40, 0]}
+          fov={20}
+          transparent={true}
+          frontImage={profilePic}
+          backImage={circuitBack}
+          lanyardWidth={1}
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-500/[0.04] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] rounded-full bg-blue-600/[0.03] blur-[80px] pointer-events-none" />
+
+      <div className="section-container py-12 md:py-20 relative z-10 w-full pointer-events-none">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Text Left Column */}
+          {/* Text Column */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="lg:col-span-7 space-y-6 text-left"
+            className="lg:col-span-7 space-y-8"
           >
-            {/* Tag / Badge */}
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-neonCyan/10 border border-neonCyan/30 text-neonCyan font-mono text-xs"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20"
             >
-              <Sparkles className="w-3.5 h-3.5 animate-spin" />
-              <span>Available for Internships & Entry-Level Roles</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs font-medium text-emerald-400">
+                Open to opportunities
+              </span>
             </motion.div>
 
-            {/* Name */}
-            <motion.div variants={itemVariants} className="space-y-2">
-              <span className="text-slate-400 font-mono text-sm tracking-widest block uppercase">
-                // System.out.println("Hello World");
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                Achuta Leela Satya Sai{' '}
-                <span className="bg-gradient-to-r from-neonCyan via-neonIndigo to-neonPurple bg-clip-text text-transparent text-glow-cyan">
-                  Venkata Ramana
-                </span>
+            <motion.div variants={itemVariants} className="space-y-3">
+              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-bold tracking-tight text-white leading-[1.1]">
+                Venkata Ramana
+                <br />
+                <span className="gradient-text">Achuta</span>
               </h1>
             </motion.div>
 
-            {/* Headline */}
             <motion.h2
               variants={itemVariants}
-              className="text-xl sm:text-2xl font-bold text-slate-200"
+              className="text-lg sm:text-xl font-medium text-slate-300"
             >
-              AI Full Stack Developer building intelligent applications and automation workflows
+              Software Engineer building intelligent applications and automation workflows
             </motion.h2>
 
-            {/* Description */}
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg text-slate-400 max-w-2xl leading-relaxed"
+              className="text-base text-slate-400 max-w-xl leading-relaxed"
             >
-              Aspiring Full Stack Developer and AI Automation Builder experienced in developing
-              scalable web applications, API integrations, and AI-powered workflows using modern technologies.
+              Computer Science student with a passion for building scalable full-stack applications 
+              and AI-powered solutions. I specialize in turning complex ideas into practical software.
             </motion.p>
 
-            {/* Buttons Group */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-4 pt-4"
+              className="flex flex-wrap gap-3 pt-2 pointer-events-auto"
             >
               <button
                 onClick={() => scrollToSection('projects')}
-                className="group relative inline-flex items-center space-x-2 px-6 py-3.5 bg-neonCyan text-black font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.5)] transition-all duration-300 transform hover:-translate-y-0.5"
+                className="btn-primary"
               >
                 <span>View Projects</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4" />
               </button>
 
               <a
                 href="/resume/Venkata_Ramana_Achuta_Resume.pdf"
                 download="Venkata_Ramana_Achuta_Resume.pdf"
-                className="inline-flex items-center space-x-2 px-6 py-3.5 bg-[#121217] hover:bg-[#1a1a24] text-slate-200 hover:text-white font-semibold rounded-lg border border-darkBorder hover:border-slate-500 transition-all duration-300 transform hover:-translate-y-0.5"
+                className="btn-secondary"
               >
-                <Download className="w-4 h-4 text-neonPurple" />
-                <span>Download Resume</span>
+                <Download className="w-4 h-4" />
+                <span>Resume</span>
+              </a>
+
+              <a
+                href="https://github.com/venkataramana01"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary"
+              >
+                <GithubIcon />
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/venkataramanaachuta/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary"
+              >
+                <LinkedinIcon />
               </a>
 
               <button
                 onClick={() => scrollToSection('contact')}
-                className="inline-flex items-center space-x-2 px-6 py-3.5 bg-transparent text-slate-300 hover:text-white font-semibold rounded-lg hover:bg-white/5 transition-all duration-300"
+                className="btn-secondary"
               >
-                <Mail className="w-4 h-4 text-slate-400" />
-                <span>Contact Me</span>
+                <Mail className="w-4 h-4" />
+                <span>Contact</span>
               </button>
             </motion.div>
           </motion.div>
-
-          {/* Interactive 3D Physics Lanyard Card Right Column */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-5 relative w-full h-[550px]"
-          >
-            {/* 3D Lanyard Badge */}
-            <Lanyard 
-              position={[0, 0, 20]} 
-              gravity={[0, -40, 0]} 
-              frontImage={cardFrontImage}
-              backImage={cardBackImage}
-              lanyardWidth={4.5}
-            />
-
-            {/* Accent Glow rings in back */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-neonCyan to-neonPurple rounded-xl blur-2xl opacity-10 -z-10 animate-pulse-slow"></div>
-          </motion.div>
-
         </div>
       </div>
     </section>
