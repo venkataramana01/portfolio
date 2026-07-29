@@ -1,11 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Award, Code2, Star } from 'lucide-react';
+import SpotlightCard from './SpotlightCard';
+import CountUp from './CountUp';
 
 const Achievements = () => {
   const achievements = [
     {
       metric: '3,333+',
+      value: 3333,
+      suffix: '+',
       label: 'Problems Solved',
       desc: 'Solved over 3,333 problems on CodeChef across multiple difficulty levels.',
       icon: <Code2 className="w-5 h-5 text-primary" />,
@@ -13,6 +17,8 @@ const Achievements = () => {
     },
     {
       metric: '170+',
+      value: 170,
+      suffix: '+',
       label: 'DSA Problems',
       desc: 'Solved 170+ data structures & algorithm problems on LeetCode.',
       icon: <Code2 className="w-5 h-5 text-accent" />,
@@ -68,6 +74,7 @@ const Achievements = () => {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="p-5 rounded-xl border border-borderSubtle bg-surface/40 hover:border-borderHover hover:bg-surfaceLight/30 transition-all duration-300 flex flex-col justify-between text-left group"
             >
+              <SpotlightCard spotlightColor="rgba(59, 130, 246, 0.15)">
               <div>
                 {/* Header Row */}
                 <div className="flex items-center justify-between mb-4">
@@ -81,9 +88,28 @@ const Achievements = () => {
 
                 {/* Big Metric Display */}
                 <div className="flex items-baseline space-x-1 mb-2">
-                  <span className="text-3xl sm:text-4xl font-extrabold font-sans text-textPrimary tracking-tight">
-                    {ach.metric}
-                  </span>
+                  {ach.value != null ? (
+                    <>
+                      <CountUp
+                        from={0}
+                        to={ach.value}
+                        separator=","
+                        direction="up"
+                        duration={2}
+                        startWhen={true}
+                        className="text-3xl sm:text-4xl font-extrabold font-sans text-textPrimary tracking-tight"
+                      />
+                      {ach.suffix && (
+                        <span className="text-3xl sm:text-4xl font-extrabold font-sans text-textPrimary tracking-tight">
+                          {ach.suffix}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-3xl sm:text-4xl font-extrabold font-sans text-textPrimary tracking-tight">
+                      {ach.metric}
+                    </span>
+                  )}
                   <Star className="w-3 h-3 text-primary fill-primary" />
                 </div>
 
@@ -97,6 +123,7 @@ const Achievements = () => {
                   {ach.desc}
                 </p>
               </div>
+              </SpotlightCard>
             </motion.div>
           ))}
         </div>

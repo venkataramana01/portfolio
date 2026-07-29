@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Bot, Code, GraduationCap, Mail, Globe, Award } from 'lucide-react';
+import SpotlightCard from './SpotlightCard';
+import CountUp from './CountUp';
 
 const About = () => {
   const cards = [
@@ -22,9 +24,9 @@ const About = () => {
   ];
 
   const highlights = [
-    { number: '2+', label: 'Years Learning', desc: 'Continuous upskilling' },
-    { number: '5+', label: 'Projects Built', desc: 'Full-stack & AI' },
-    { number: '10+', label: 'Technologies', desc: 'Across the stack' },
+    { number: '2+', value: 2, suffix: '+', label: 'Years Learning', desc: 'Continuous upskilling' },
+    { number: '5+', value: 5, suffix: '+', label: 'Projects Built', desc: 'Full-stack & AI' },
+    { number: '10+', value: 10, suffix: '+', label: 'Technologies', desc: 'Across the stack' },
   ];
 
   const profileDetails = [
@@ -103,7 +105,23 @@ const About = () => {
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
                   className="p-4 rounded-xl bg-surface border border-borderSubtle text-center"
                 >
-                  <div className="text-2xl font-bold text-textPrimary">{h.number}</div>
+                  <div className="text-2xl font-bold text-textPrimary">
+                    {h.value != null ? (
+                      <>
+                        <CountUp
+                          from={0}
+                          to={h.value}
+                          direction="up"
+                          duration={2}
+                          startWhen={true}
+                          className="text-2xl font-bold text-textPrimary"
+                        />
+                        {h.suffix && <span>{h.suffix}</span>}
+                      </>
+                    ) : (
+                      h.number
+                    )}
+                  </div>
                   <div className="text-xs font-semibold text-textPrimary mt-1">{h.label}</div>
                   <div className="text-[10px] text-textSecondary mt-0.5">{h.desc}</div>
                 </motion.div>
@@ -122,11 +140,13 @@ const About = () => {
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
                   className="p-5 rounded-xl border border-borderSubtle bg-surface/50 hover:border-borderHover hover:bg-surfaceLight/30 transition-all duration-300 group"
                 >
+                  <SpotlightCard spotlightColor="rgba(59, 130, 246, 0.15)">
                   <div className="mb-3 p-2.5 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/15 transition-colors">
                     {card.icon}
                   </div>
                   <h4 className="text-sm font-bold text-textPrimary mb-1.5">{card.title}</h4>
                   <p className="text-xs text-textSecondary leading-relaxed">{card.desc}</p>
+                  </SpotlightCard>
                 </motion.div>
               ))}
             </div>
@@ -141,6 +161,7 @@ const About = () => {
             className="lg:col-span-5 space-y-4"
           >
             <div className="p-6 glass-card rounded-2xl relative overflow-hidden">
+              <SpotlightCard spotlightColor="rgba(59, 130, 246, 0.12)">
               <div className="absolute top-0 right-0 p-3 text-primary border-b border-l border-borderSubtle font-mono text-[10px] rounded-bl-xl bg-primary/5">
                 INFO
               </div>
@@ -191,6 +212,7 @@ const About = () => {
                   Open to work
                 </span>
               </div>
+              </SpotlightCard>
             </div>
           </motion.div>
         </div>

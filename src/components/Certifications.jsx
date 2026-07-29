@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, ShieldCheck, Database, CheckSquare, Layers } from 'lucide-react';
+import Shuffle from './Shuffle';
+import SpotlightCard from './SpotlightCard';
 
 const Certifications = () => {
   const certifications = [
@@ -48,9 +50,23 @@ const Certifications = () => {
           className="mb-16"
         >
           <p className="text-primary text-sm font-semibold tracking-wider uppercase mb-3">Certifications</p>
-          <h2 className="section-heading mb-4">
-            Verified credentials
-          </h2>
+          <Shuffle
+            text="Verified credentials"
+            tag="h2"
+            textAlign="inherit"
+            className="section-heading mb-4"
+            shuffleDirection="up"
+            duration={0.65}
+            animationMode="evenodd"
+            shuffleTimes={3}
+            ease="power3.out"
+            stagger={0.05}
+            threshold={0.1}
+            triggerOnce={true}
+            triggerOnHover={true}
+            respectReducedMotion={true}
+            loopDelay={1.9}
+          />
           <p className="section-subtitle">
             Industry-recognized certifications validating my technical skills.
           </p>
@@ -68,6 +84,7 @@ const Certifications = () => {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="p-5 rounded-xl border border-borderSubtle bg-surface/40 hover:border-borderHover hover:bg-surfaceLight/30 transition-all duration-300 flex flex-col justify-between text-left group"
             >
+              <SpotlightCard spotlightColor="rgba(59, 130, 246, 0.15)">
               <div>
                 {/* Icon wrapper */}
                 <div className="mb-4 inline-block p-2.5 bg-primary/10 rounded-lg group-hover:bg-primary/15 transition-colors">
@@ -100,6 +117,7 @@ const Certifications = () => {
                   Verify
                 </a>
               </div>
+              </SpotlightCard>
             </motion.div>
           ))}
         </div>

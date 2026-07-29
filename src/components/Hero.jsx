@@ -4,6 +4,7 @@ import { ArrowRight, Download, Mail } from 'lucide-react';
 import profilePic from '../assets/profile.jpg';
 import Lanyard from './Lanyard';
 import LightRays from './LightRays';
+import FuzzyText from './FuzzyText';
 
 const GithubIcon = ({ className }) => (
   <svg className={className || "w-4 h-4"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -245,12 +246,32 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-bold tracking-tight text-white leading-[1.1]">
+            <motion.div variants={itemVariants} className="space-y-1">
+              <FuzzyText
+                baseIntensity={0.18}
+                hoverIntensity={0.86}
+                enableHover={true}
+                fontSize="clamp(2rem, 6vw, 64px)"
+                fontWeight={700}
+                color="#F8FAFC"
+                fuzzRange={30}
+                className="block -ml-[50px] pointer-events-auto"
+              >
                 Venkata Ramana
-                <br />
-                <span className="gradient-text">Achuta</span>
-              </h1>
+              </FuzzyText>
+              <FuzzyText
+                baseIntensity={0.18}
+                hoverIntensity={0.86}
+                enableHover={true}
+                fontSize="clamp(2rem, 6vw, 64px)"
+                fontWeight={700}
+                gradient={['#3B82F6', '#60A5FA', '#93C5FD']}
+                fuzzRange={30}
+                direction="horizontal"
+                className="block -ml-[50px] pointer-events-auto"
+              >
+                Achuta
+              </FuzzyText>
             </motion.div>
 
             <motion.h2
