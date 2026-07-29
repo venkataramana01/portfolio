@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Dock from './components/Dock';
 import ParticlesBackground from './components/ParticlesBackground';
 import Hero from './components/Hero';
@@ -15,12 +15,8 @@ import Footer from './components/Footer';
 const scrollToSection = (id) => {
   const element = document.getElementById(id);
   if (element) {
-    const offset = 80;
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = element.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
-    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    const top = element.getBoundingClientRect().top + window.scrollY + 80;
+    window.scrollTo({ top, behavior: 'smooth' });
   }
 };
 
@@ -81,18 +77,41 @@ const MailIcon = () => (
   </svg>
 );
 
+const sectionIds = ['home', 'about', 'skills', 'showcase', 'projects', 'experience', 'certifications', 'contact'];
+
 const dockItems = [
-  { icon: <HomeIcon />, label: 'Home', onClick: () => scrollToSection('home') },
-  { icon: <UserIcon />, label: 'About', onClick: () => scrollToSection('about') },
-  { icon: <CodeIcon />, label: 'Skills', onClick: () => scrollToSection('skills') },
-  { icon: <WorkflowIcon />, label: 'Workflows', onClick: () => scrollToSection('showcase') },
-  { icon: <FolderIcon />, label: 'Projects', onClick: () => scrollToSection('projects') },
-  { icon: <ClockIcon />, label: 'Experience', onClick: () => scrollToSection('experience') },
-  { icon: <AwardIcon />, label: 'Certifications', onClick: () => scrollToSection('certifications') },
-  { icon: <MailIcon />, label: 'Contact', onClick: () => scrollToSection('contact') },
+  { id: 'home', icon: <HomeIcon />, label: 'Home', onClick: () => scrollToSection('home') },
+  { id: 'about', icon: <UserIcon />, label: 'About', onClick: () => scrollToSection('about') },
+  { id: 'skills', icon: <CodeIcon />, label: 'Skills', onClick: () => scrollToSection('skills') },
+  { id: 'showcase', icon: <WorkflowIcon />, label: 'Workflows', onClick: () => scrollToSection('showcase') },
+  { id: 'projects', icon: <FolderIcon />, label: 'Projects', onClick: () => scrollToSection('projects') },
+  { id: 'experience', icon: <ClockIcon />, label: 'Experience', onClick: () => scrollToSection('experience') },
+  { id: 'certifications', icon: <AwardIcon />, label: 'Certifications', onClick: () => scrollToSection('certifications') },
+  { id: 'contact', icon: <MailIcon />, label: 'Contact', onClick: () => scrollToSection('contact') },
 ];
 
 function App() {
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-50% 0px -50% 0px' }
+    );
+
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
   return (
     <div className="relative min-h-screen text-slate-100 selection:bg-primary/30 selection:text-white overflow-x-hidden">
       <ParticlesBackground />
@@ -113,6 +132,7 @@ function App() {
 
       <Dock
         items={dockItems}
+        activeSection={activeSection}
         panelHeight={64}
         baseItemSize={44}
         magnification={68}

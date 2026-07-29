@@ -44,6 +44,15 @@
   border-color: rgba(59, 130, 246, 0.25);
 }
 
+.dock-item-active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.dock-item-active .dock-icon {
+  color: #F8FAFC;
+}
+
 .dock-item:focus-visible {
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }

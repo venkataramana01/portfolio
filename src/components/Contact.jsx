@@ -33,7 +33,8 @@ const Contact = () => {
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setStatus(null), 5000);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error('EmailJS error:', err);
       setStatus('error');
       setTimeout(() => setStatus(null), 5000);
     });

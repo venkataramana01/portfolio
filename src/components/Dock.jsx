@@ -3,7 +3,7 @@ import { Children, cloneElement, useEffect, useMemo, useRef, useState } from 're
 
 import './Dock.css';
 
-function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize, label }) {
+function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize, label, isActive }) {
   const ref = useRef(null);
   const isHovered = useMotionValue(0);
 
@@ -37,7 +37,7 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`dock-item ${className}`}
+      className={`dock-item ${isActive ? 'dock-item-active' : ''} ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -91,7 +91,8 @@ export default function Dock({
   distance = 200,
   panelHeight = 68,
   dockHeight = 256,
-  baseItemSize = 50
+  baseItemSize = 50,
+  activeSection
 }) {
   const mouseX = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
@@ -130,6 +131,7 @@ export default function Dock({
             magnification={magnification}
             baseItemSize={baseItemSize}
             label={item.label}
+            isActive={item.id === activeSection}
           >
             <DockIcon>{item.icon}</DockIcon>
             <DockLabel>{item.label}</DockLabel>
