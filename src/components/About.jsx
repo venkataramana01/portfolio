@@ -1,218 +1,155 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Bot, Code, GraduationCap, Mail, Globe, Award } from 'lucide-react';
-import SpotlightCard from './SpotlightCard';
-import CountUp from './CountUp';
+import { GraduationCap, Mail, Globe, MapPin, Cpu, Layers, Workflow } from 'lucide-react';
+import profilePic from '../assets/profile.jpg';
+
+const interests = [
+  { icon: <Cpu className="w-4 h-4" />, label: 'Full-Stack Engineering' },
+  { icon: <Layers className="w-4 h-4" />, label: 'AI & LLM Systems' },
+  { icon: <Workflow className="w-4 h-4" />, label: 'Workflow Automation' },
+  { icon: <MapPin className="w-4 h-4" />, label: 'Andhra Pradesh, India' },
+];
+
+const details = [
+  {
+    icon: <GraduationCap className="w-4 h-4 text-cyan-300" />,
+    label: 'Education',
+    value: 'B.Tech Computer Science — Sasi Institute',
+    sub: 'CGPA: 8.9',
+  },
+  {
+    icon: <Mail className="w-4 h-4 text-cyan-300" />,
+    label: 'Email',
+    value: 'venkataramanaachuta1@gmail.com',
+    link: 'mailto:venkataramanaachuta1@gmail.com',
+  },
+  {
+    icon: <Globe className="w-4 h-4 text-cyan-300" />,
+    label: 'Codolio',
+    value: 'codolio.com/profile/venkataramana',
+    link: 'https://codolio.com/profile/venkataramana',
+  },
+];
 
 const About = () => {
-  const cards = [
-    {
-      icon: <Brain className="w-6 h-6 text-primary" />,
-      title: 'Problem Solver',
-      desc: 'Algorithms enthusiast with 1000+ solved coding problems and strong computational logic.',
-    },
-    {
-      icon: <Bot className="w-6 h-6 text-accent" />,
-      title: 'AI Automation Builder',
-      desc: 'Designing agentic workflows, LLM integrations, and custom n8n pipelines.',
-    },
-    {
-      icon: <Code className="w-6 h-6 text-primary" />,
-      title: 'Full Stack Developer',
-      desc: 'Developing fast, responsive, and data-driven web applications in React, Node, and MongoDB.',
-    },
-  ];
-
-  const highlights = [
-    { number: '2+', value: 2, suffix: '+', label: 'Years Learning', desc: 'Continuous upskilling' },
-    { number: '5+', value: 5, suffix: '+', label: 'Projects Built', desc: 'Full-stack & AI' },
-    { number: '10+', value: 10, suffix: '+', label: 'Technologies', desc: 'Across the stack' },
-  ];
-
-  const profileDetails = [
-    {
-      icon: <GraduationCap className="w-4 h-4 text-primary" />,
-      label: 'Education',
-      value: 'B.Tech CSE — Sasi Institute',
-      sub: 'CGPA: 8.9',
-    },
-    {
-      icon: <Mail className="w-4 h-4 text-accent" />,
-      label: 'Email',
-      value: 'venkataramanaachuta1@gmail.com',
-      link: 'mailto:venkataramanaachuta1@gmail.com',
-    },
-    {
-      icon: <Globe className="w-4 h-4 text-emerald-400" />,
-      label: 'Portfolio',
-      value: 'codolio.com/profile/venkataramana',
-      link: 'https://codolio.com/profile/venkataramana',
-    },
-  ];
-
   return (
     <section id="about" className="section-padding relative overflow-hidden">
-      <div className="absolute top-1/2 right-0 w-[500px] h-[500px] rounded-full bg-primary/[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-[500px] h-[400px] rounded-full bg-indigo-600/[0.05] blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto z-10 relative">
-        {/* Section Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <p className="text-primary text-sm font-semibold tracking-wider uppercase mb-3">About</p>
-          <h2 className="section-heading mb-4">
-            A bit about me
-          </h2>
-          <p className="section-subtitle">
-            Building scalable applications and intelligent automation systems.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column - Intro + Cards */}
+      <div className="section-container relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Photo */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -36 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-7 space-y-8"
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5"
           >
-            {/* Intro */}
-            <div className="space-y-4">
-              <p className="text-lg text-textSecondary leading-relaxed font-medium">
-                I'm a Computer Science student passionate about building scalable full-stack applications and AI-powered solutions.
-              </p>
-              <p className="text-textSecondary leading-relaxed">
-                I specialize in Java, JavaScript, MongoDB, AI automation workflows, and LLM integrations.
-                I enjoy transforming complex ideas into practical software solutions. By combining full-stack
-                architectures with advanced automation, I construct systems that process data, handle
-                real-time decisions, and save human hours.
-              </p>
-            </div>
-
-            {/* Highlight Stats */}
-            <div className="grid grid-cols-3 gap-4">
-              {highlights.map((h, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  className="p-4 rounded-xl bg-surface border border-borderSubtle text-center"
-                >
-                  <div className="text-2xl font-bold text-textPrimary">
-                    {h.value != null ? (
-                      <>
-                        <CountUp
-                          from={0}
-                          to={h.value}
-                          direction="up"
-                          duration={2}
-                          startWhen={true}
-                          className="text-2xl font-bold text-textPrimary"
-                        />
-                        {h.suffix && <span>{h.suffix}</span>}
-                      </>
-                    ) : (
-                      h.number
-                    )}
-                  </div>
-                  <div className="text-xs font-semibold text-textPrimary mt-1">{h.label}</div>
-                  <div className="text-[10px] text-textSecondary mt-0.5">{h.desc}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Specialization Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {cards.map((card, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.2 + idx * 0.1 }}
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="p-5 rounded-xl border border-borderSubtle bg-surface/50 hover:border-borderHover hover:bg-surfaceLight/30 transition-all duration-300 group"
-                >
-                  <SpotlightCard spotlightColor="rgba(59, 130, 246, 0.15)">
-                  <div className="mb-3 p-2.5 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/15 transition-colors">
-                    {card.icon}
-                  </div>
-                  <h4 className="text-sm font-bold text-textPrimary mb-1.5">{card.title}</h4>
-                  <p className="text-xs text-textSecondary leading-relaxed">{card.desc}</p>
-                  </SpotlightCard>
-                </motion.div>
-              ))}
+            <div className="relative max-w-sm mx-auto lg:mx-0">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-blue-500/15 to-cyan-400/10 blur-xl pointer-events-none" />
+              <div className="relative rounded-3xl glass-panel p-2.5">
+                <div className="rounded-2xl overflow-hidden aspect-[4/5] bg-midnight">
+                  <img
+                    src={profilePic}
+                    alt="Venkata Ramana Achuta"
+                    loading="lazy"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <div className="flex items-center justify-between px-3 py-2.5">
+                  <span className="text-xs font-mono text-textSecondary">based in india · est. curious</span>
+                  <span className="flex items-center gap-1.5 text-[11px] font-medium text-emerald-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Open to work
+                  </span>
+                </div>
+              </div>
             </div>
           </motion.div>
 
-          {/* Right Column - Profile Info */}
+          {/* Identity */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 36 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-5 space-y-4"
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-7"
           >
-            <div className="p-6 glass-card rounded-2xl relative overflow-hidden">
-              <SpotlightCard spotlightColor="rgba(59, 130, 246, 0.12)">
-              <div className="absolute top-0 right-0 p-3 text-primary border-b border-l border-borderSubtle font-mono text-[10px] rounded-bl-xl bg-primary/5">
-                INFO
-              </div>
-              <h3 className="text-sm font-bold text-textPrimary mb-6 font-mono">
-                Developer Profile
-              </h3>
+            <p className="text-electric text-xs font-semibold tracking-[0.25em] uppercase mb-4">About</p>
+            <h2 className="text-4xl sm:text-5xl font-bold text-textPrimary tracking-tight leading-[1.05] mb-6">
+              Curious builder,<br />
+              <span className="text-gradient-cinematic">lifelong learner</span>
+            </h2>
 
-              <div className="space-y-5">
-                {profileDetails.map((detail, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <div className="p-2 bg-surface rounded-lg border border-borderSubtle mt-0.5 shrink-0">
-                      {detail.icon}
-                    </div>
-                    <div className="text-left min-w-0">
-                      <span className="text-[10px] font-mono text-textSecondary uppercase block tracking-wider">
-                        {detail.label}
-                      </span>
-                      {detail.link ? (
-                        <a
-                          href={detail.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-medium text-textPrimary hover:text-primary transition-colors block mt-0.5 truncate"
-                        >
-                          {detail.value}
-                        </a>
-                      ) : (
-                        <span className="text-sm font-medium text-textPrimary block mt-0.5">
-                          {detail.value}
-                        </span>
-                      )}
-                      {detail.sub && (
-                        <span className="text-xs text-textSecondary block mt-0.5">{detail.sub}</span>
-                      )}
-                    </div>
+            <p className="text-textSecondary text-base sm:text-lg leading-relaxed max-w-xl">
+              I'm a Computer Science student who loves the space where software
+              engineering meets intelligence — designing systems that don't just
+              respond, but reason.
+            </p>
+            <p className="mt-3 text-textSecondary text-base leading-relaxed max-w-xl">
+              Most of my energy goes into full-stack products and AI-powered
+              workflows: LLM integrations, RAG pipelines, and automation that
+              quietly saves hours of human work.
+            </p>
+
+            {/* Interest chips */}
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              {interests.map((it, i) => (
+                <motion.span
+                  key={it.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.2 + i * 0.06 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-sm text-slate-200 border border-white/[0.08]"
+                >
+                  <span className="text-cyan-300">{it.icon}</span>
+                  {it.label}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* Details */}
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {details.map((d, i) => (
+                <motion.div
+                  key={d.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-400/30 hover:bg-white/[0.05] transition-all duration-300 h-full flex flex-col"
+                >
+                  <div className="flex items-center gap-2.5 mb-4">
+                    <span className="p-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 shrink-0">
+                      {d.icon}
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-textSecondary">
+                      {d.label}
+                    </span>
                   </div>
-                ))}
-              </div>
-
-              {/* Footer */}
-              <div className="pt-5 mt-5 border-t border-borderSubtle flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs text-textSecondary font-mono">
-                  <Award className="w-3.5 h-3.5 text-primary" />
-                  <span>Continuous Learner</span>
-                </div>
-                <span className="text-xs text-emerald-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Open to work
-                </span>
-              </div>
-              </SpotlightCard>
+                  <div className="flex-1">
+                    {d.link ? (
+                      <a
+                        href={d.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-semibold text-textPrimary hover:text-cyan-300 transition-colors block leading-snug break-words"
+                      >
+                        {d.value}
+                      </a>
+                    ) : (
+                      <span className="text-sm font-semibold text-textPrimary block leading-snug break-words">
+                        {d.value}
+                      </span>
+                    )}
+                    {d.sub && (
+                      <span className="text-xs text-textSecondary block mt-1.5">{d.sub}</span>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

@@ -7,16 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        darkBg: '#0B0F19',
-        surface: '#111827',
+        darkBg: '#070B14',
+        midnight: '#0B1220',
+        surface: '#0F172A',
         surfaceLight: '#1E293B',
         card: '#111827',
         primary: '#3B82F6',
         accent: '#60A5FA',
+        electric: '#22D3EE',
         textPrimary: '#F8FAFC',
         textSecondary: '#94A3B8',
-        borderSubtle: 'rgba(255,255,255,0.08)',
-        borderHover: 'rgba(255,255,255,0.15)',
+        borderSubtle: 'rgba(148,163,184,0.14)',
+        borderHover: 'rgba(148,163,184,0.28)',
       },
       fontFamily: {
         sans: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],

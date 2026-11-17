@@ -8,8 +8,12 @@
     scroll-behavior: smooth;
   }
 
+  section[id] {
+    scroll-margin-top: 90px;
+  }
+
   body {
-    background: #0B0F19;
+    background: #070B14;
     color: #F8FAFC;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -18,7 +22,7 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #1E293B #0B0F19;
+    scrollbar-color: #1E293B #070B14;
   }
 }
 
@@ -116,7 +120,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #070B14;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -152,4 +156,67 @@
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+}
+
+/* Cinematic helpers */
+.text-gradient-cinematic {
+  background: linear-gradient(100deg, #F8FAFC 10%, #60A5FA 45%, #22D3EE 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.glass-panel {
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.72), rgba(7, 11, 20, 0.55));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+@keyframes gradient-pan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-pan {
+  background-size: 200% 200%;
+  animation: gradient-pan 14s ease infinite;
+}
+
+@keyframes beam-sweep {
+  0% { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(240%) skewX(-18deg); }
+}
+
+.animate-beam {
+  animation: beam-sweep 5.5s ease-in-out infinite;
+}
+
+@keyframes nodeGlow {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.55; }
+}
+
+.node-glow {
+  animation: nodeGlow 3.4s ease-in-out infinite;
+}
+
+@keyframes labelIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.const-label {
+  animation: labelIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

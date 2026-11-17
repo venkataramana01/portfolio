@@ -10,11 +10,16 @@ const ParticlesBackground = () => {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768;
+
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
     const particles = [];
-    const particleCount = Math.min(35, Math.floor((width * height) / 40000));
+    const particleCount = reduceMotion
+      ? 0
+      : Math.min(isMobile ? 18 : 35, Math.floor((width * height) / (isMobile ? 60000 : 40000)));
     const connectionDistance = 140;
     const mouse = { x: null, y: null, radius: 180 };
 
@@ -81,6 +86,8 @@ const ParticlesBackground = () => {
       }
     };
 
+    if (reduceMotion) return;
+
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
       particles.forEach((particle) => {
@@ -124,7 +131,7 @@ const ParticlesBackground = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 w-full h-full pointer-events-none -z-10"
-      style={{ background: '#0B0F19' }}
+      style={{ background: '#070B14' }}
     />
   );
 };
